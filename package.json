@@ -1,7 +1,7 @@
 {
   "name": "markdown-previewer",
   "version": "1.0.0",
-  "description": "A markdown previewer built on React for the FreeCodeCamp Front End Libraries Certification",
+  "description": "A markdown previewer built with React as part of the FreeCodeCamp Front End Libraries certification.",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
