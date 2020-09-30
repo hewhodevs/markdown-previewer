@@ -13,9 +13,17 @@ const MarkdownPreviewerContainer = styled.div`
 
 const TextAreaContainer = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   margin-top: 10px;
   margin-bottom: 20px;
+`;
+
+const PreviewContainer = styled.div`
+  border: 1px solid #000000;
+  width: 400px;
+  height: 200px;
 `;
 
 const StyledLabel = styled.label`
@@ -27,16 +35,27 @@ class MarkdownPreviewer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputText: "",
+      markupPreview: "",
     }
     this.onChangeInputText = this.onChangeInputText.bind(this);
   }
-  onChangeInputText(e) {
-    let compiledHTMLString = marked(e.target.value);
-    this.setState({
-      inputText: compiledHTMLString,
-    });
+
+  componentDidMount() {
+    // Append FreeCodeCamp tests to the DOM to see the test suite
+    const script = document.createElement("script");
+    script.src =
+      "https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js";
+    script.async = true;
+    document.body.appendChild(script);
   }
+
+  onChangeInputText(e) {
+    const compiledMarkup = marked(e.target.value);
+    this.setState({
+      markupPreview: compiledMarkup
+    })
+  }
+
   render() {
     return(
       <MarkdownPreviewerContainer>
@@ -46,7 +65,7 @@ class MarkdownPreviewer extends React.Component {
         </TextAreaContainer>
         <TextAreaContainer>
           <StyledLabel>Markdown Preview</StyledLabel>
-          <textarea name="preview" id="preview" cols="30" rows="10" defaultValue={this.state.inputText} readOnly></textarea>
+          <PreviewContainer className="preview" dangerouslySetInnerHTML={{__html: this.state.markupPreview}}></PreviewContainer>
         </TextAreaContainer>
       </MarkdownPreviewerContainer>
     );
