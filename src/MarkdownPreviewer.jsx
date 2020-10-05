@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import marked from "marked";
+import DOMPurify from "dompurify";
 
 const MarkdownPreviewerContainer = styled.div`
   width: 100%;
@@ -35,8 +36,8 @@ class MarkdownPreviewer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      markupPreview: "",
-    }
+      markupPreview: ""
+    };
     this.onChangeInputText = this.onChangeInputText.bind(this);
   }
 
@@ -50,22 +51,34 @@ class MarkdownPreviewer extends React.Component {
   }
 
   onChangeInputText(e) {
+    // convert to markup string using marked
     const compiledMarkup = marked(e.target.value);
+    // sanitize string using DOMPurify to prevent XSS attacks
+    const sanitizedString = DOMPurify.sanitize(compiledMarkup);
     this.setState({
-      markupPreview: compiledMarkup
-    })
+      markupPreview: sanitizedString
+    });
   }
 
   render() {
-    return(
+    return (
       <MarkdownPreviewerContainer>
         <TextAreaContainer>
           <StyledLabel>Markdown Input</StyledLabel>
-          <textarea name="editor" id="editor" cols="30" rows="10" onChange={this.onChangeInputText}></textarea>
+          <textarea
+            name="editor"
+            id="editor"
+            cols="30"
+            rows="10"
+            onChange={this.onChangeInputText}
+          ></textarea>
         </TextAreaContainer>
         <TextAreaContainer>
           <StyledLabel>Markdown Preview</StyledLabel>
-          <PreviewContainer className="preview" dangerouslySetInnerHTML={{__html: this.state.markupPreview}}></PreviewContainer>
+          <PreviewContainer
+            className="preview"
+            dangerouslySetInnerHTML={{ __html: this.state.markupPreview }}
+          ></PreviewContainer>
         </TextAreaContainer>
       </MarkdownPreviewerContainer>
     );
