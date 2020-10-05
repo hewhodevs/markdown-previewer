@@ -3,6 +3,10 @@ import styled from "styled-components";
 import marked from "marked";
 import DOMPurify from "dompurify";
 
+// -----------------------------------
+// Styled Components
+// -----------------------------------
+
 const MarkdownPreviewerContainer = styled.div`
   width: 100%;
   justify-content: center;
@@ -31,6 +35,10 @@ const StyledLabel = styled.label`
   margin-bottom: 5px;
   padding: 5px;
 `;
+
+// -----------------------------------
+// React Components
+// -----------------------------------
 
 class MarkdownPreviewer extends React.Component {
   constructor(props) {
