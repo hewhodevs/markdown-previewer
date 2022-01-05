@@ -3,6 +3,38 @@ import styled from "styled-components";
 import marked from "marked";
 import DOMPurify from "dompurify";
 
+// default markdown input displayed on page load
+const defaultImage = 'https://code.visualstudio.com/assets/apple-touch-icon.png';
+const defaultMarkdown = `
+# Markdown Previewer
+
+## Links
+A link [Link to Google](https://www.google.com)
+
+## Inline Code
+Some inline \`code\` here \`npm install\` <br>
+
+## Code Blocks
+    <html>
+      <head>
+      </head>
+    </html>
+
+## List Items
+1. item
+2. item
+3. item
+
+## Blockquotes
+> Dorothy followed her through many of the beautiful rooms in her castle.
+
+## Images
+![vscode](${defaultImage})
+
+## Bold Text
+Some **bold text** here
+`;
+
 // -----------------------------------
 // Styled Components
 // -----------------------------------
@@ -46,6 +78,7 @@ class MarkdownPreviewer extends React.Component {
     this.state = {
       markupPreview: ""
     };
+    this.convertToMarkdown = this.convertToMarkdown.bind(this);
     this.onChangeInputText = this.onChangeInputText.bind(this);
   }
 
@@ -56,13 +89,21 @@ class MarkdownPreviewer extends React.Component {
       "https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js";
     script.async = true;
     document.body.appendChild(script);
+    // Set default text on load, and show it's corresponding markdown
+    const editorText = document.getElementById('editor').value;
+    this.convertToMarkdown(editorText);
   }
 
   onChangeInputText(e) {
-    // convert to markup string using marked
-    const compiledMarkup = marked(e.target.value);
-    // sanitize string using DOMPurify to prevent XSS attacks
+    this.convertToMarkdown(e.target.value);
+  }
+
+  convertToMarkdown(str) {
+    // convert to markup string using marked lib method
+    const compiledMarkup = marked(str);
+    // sanitize the string using DOMPurify to prevent XSS attacks
     const sanitizedString = DOMPurify.sanitize(compiledMarkup);
+    // update component state
     this.setState({
       markupPreview: sanitizedString
     });
@@ -79,11 +120,13 @@ class MarkdownPreviewer extends React.Component {
             cols="30"
             rows="10"
             onChange={this.onChangeInputText}
+            defaultValue={defaultMarkdown}
           ></textarea>
         </TextAreaContainer>
         <TextAreaContainer>
           <StyledLabel>Markdown Preview</StyledLabel>
           <PreviewContainer
+            id="preview"
             className="preview"
             dangerouslySetInnerHTML={{ __html: this.state.markupPreview }}
           ></PreviewContainer>
