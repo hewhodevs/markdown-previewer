@@ -55,11 +55,17 @@ const TextAreaContainer = styled.div`
   flex-direction: column;
   margin-top: 10px;
   margin-bottom: 20px;
+  width: 400px;
+  textarea {
+    width: 100%;
+  }
 `;
 
 const PreviewContainer = styled.div`
   width: 400px;
   height: 200px;
+  border: 1px solid black;
+  overflow-y: scroll;
 `;
 
 const StyledLabel = styled.label`
@@ -133,6 +139,9 @@ class MarkdownPreviewer extends React.Component {
             dangerouslySetInnerHTML={{ __html: this.state.markupPreview }}
           ></PreviewContainer>
         </TextAreaContainer>
+        <footer>
+          <p>Created by <a href="https://github.com/hewhodevs">Joshua Kelly</a>. Code available on <a href="https://github.com/hewhodevs/markdown-previewer">GitHub.</a></p>
+        </footer>
       </MarkdownPreviewerContainer>
     );
   }
