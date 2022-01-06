@@ -98,6 +98,9 @@ class MarkdownPreviewer extends React.Component {
   }
 
   convertToMarkdown(str) {
+    marked.setOptions({
+      breaks: true,
+    });
     // convert to markup string using marked lib method
     const compiledMarkup = marked(str);
     // sanitize the string using DOMPurify to prevent XSS attacks
