@@ -58,7 +58,6 @@ const TextAreaContainer = styled.div`
 `;
 
 const PreviewContainer = styled.div`
-  border: 1px solid #000000;
   width: 400px;
   height: 200px;
 `;
